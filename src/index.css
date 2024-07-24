@@ -1,13 +1,455 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* google font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+
+/* layout */
+:root {
+  --primary: #1aac83;
+  --error: #e7195a;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  background: #f1f1f1;
+  margin: 0;
+  font-family: "Poppins";
 }
+
+/*.main {
+  background-image: url('./assets/main.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+header {
+  background: #fff;
+  position: fixed; /* Fix the header to the top */
+  top: 0; /* Ensure it's at the very top */
+  left: 0; /* Ensure it starts from the left edge */
+  width: 100%; /* Make it span the entire width */
+  z-index: 1000;
+}
+
+header .navbar-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header a {
+  color: #333;
+  text-decoration: none;
+}
+.pages{
+  max-width: 1400px;
+  padding: 20px;
+  padding-bottom: 10px;
+  margin: 110px auto 0; /* Add top margin to avoid overlap with fixed header */
+}
+
+/* homepage */
+
+
+.rooms2, .new-rooms2, .dm-rooms2 {
+  background: #fff;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+.rooms2 h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+  color: var(--primary);
+}
+
+.dm-rooms2 h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+  color: var(--primary);
+}
+.rooms2 p {
+  margin: 0;
+  font-size: 1em;
+  color: #555;
+}
+.dm-rooms2 p {
+  margin: 0;
+  font-size: 1em;
+  color: #555;
+}
+.rooms2 span {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background: #f1f1f1;
+  padding: 6px;
+  border-radius: 50%;
+  color: #333;
+}
+
+.dm-rooms2 span {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background: #f1f1f1;
+  padding: 6px;
+  border-radius: 50%;
+  color: #333;
+}
+
+/* new workout form */
+label {
+  display: block;
+}
+input {
+  padding: 10px;
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.login-button, .signup-button {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+  width: 300px;
+  height: 100px;
+  font-size: 50px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+div.error {
+  padding: 10px;
+  background: #ffefef;
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+input.error {
+  border: 1px solid var(--error);
+}
+
+.main-header {
+  text-align: center;
+}
+
+.log-out, .create, .join {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+  width: 120px;
+  height: 50px;
+  font-size: 18px;
+}
+
+.login-signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.login-button2, .signup-button2 {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.main-header {
+  font-size: 45px;
+}
+
+.signup-container {
+  padding-top: 30px;
+}
+
+.create-available-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 180px;
+  gap: 30px;
+}
+
+.create-button, .available-button {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+  width: 190px;
+  height: 70px;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.chat-room {
+   /* Set the height of the chat room to full viewport height */
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 100px;
+}
+
+.chat-left {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.messages {
+  flex: 1; /* Take up available space */
+  overflow-y: auto; /* Allow vertical scrolling */
+  border: 3px solid black;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  scrollbar-width: thin;
+  background-color: #fff;
+}
+
+.messages-header {
+  border: 3px solid black;
+  border-bottom: 0px;
+  background-color: darkgray;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  text-align: center;
+}
+
+.users-header {
+  border: 3px solid black;
+  border-bottom: 0px;
+  background-color: darkgray;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.users-header h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.messages-header h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.enter-message {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.enter-message input {
+  flex: 1; /* Allow input to take up remaining space */
+  margin-right: 10px; /* Space between input and button */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+.enter-message button.disabled-button {
+  opacity: 0.5; /* Reduce opacity when button is disabled */
+  cursor: not-allowed; /* Change cursor to not-allowed */
+}
+
+.enter-message button {
+  padding: 10px 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.enter-message button:hover {
+  background: #0056b3;
+}
+
+.message h4 {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-left: 3px;
+}
+
+.message h3 {
+  margin-top: 0px;
+  margin-left: 5px;
+  margin-bottom: 13px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 16px;
+  background-color: darkgray;
+  font-weight: normal; 
+  border-radius: 25px; /* Create an elliptical design */
+  display: inline-block;
+}
+
+.top-container {
+  height: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 100px;
+  margin-top: 30px;
+}
+
+.chat-room-container h3 {
+  margin-bottom: 10px;
+}
+
+.dm-room-container h3 {
+  margin-bottom: 10px;
+}
+
+form.signup, form.login {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.rooms {
+  flex: 1; /* Take up available space */
+  overflow-y: auto; /* Allow vertical scrolling */
+  scrollbar-width: thin;
+  height: 69vh;
+}
+
+.dm-rooms {
+  flex: 1; /* Take up available space */
+  overflow-y: auto; /* Allow vertical scrolling */
+  scrollbar-width: thin;
+  height: 69vh;
+}
+
+.chat-room-container {
+  height: 60vh;
+}
+
+.chat-right {
+  display: flex;
+  flex-direction: column;
+  height: 70.7vh; /* Ensures that chat-right takes up 80% of the viewport height */
+}
+
+.users {
+  flex: 1; /* Takes up available space */
+  overflow-y: auto; /* Allows vertical scrolling */
+  border: 3px solid black;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  scrollbar-width: thin;
+  background-color: #fff;
+}
+
+.material-symbols-outlined {
+  cursor: pointer;
+}
+
+.text-time-container {
+  display: flex;
+  gap: 10px; /* Aligns text and time */
+  align-items: center; /* Vertically centers the items */
+}
+
+.text-time-container p {
+  margin-bottom: 13px;
+  margin-top: 0px;
+  font-size: 10px;
+}
+
+form.create-room {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.app-home-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav2 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav1 {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+button:hover {
+  background: #138a6b;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content p {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  margin: 0px;
+  font-size: 13.5px;
+}
+
+.dropdown-content p:hover {background-color: darkgray}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown h3:hover {
+  cursor: pointer;
+}
+
