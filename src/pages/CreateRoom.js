@@ -11,6 +11,9 @@ const CreateRoom = () => {
   const username = sessionStorage.getItem("user");
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
+  const [password, setPassword] = useState("");
+  const [clicked, setClicked] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const navigate = useNavigate();
 
   const handleCreate = async (event) => {
@@ -22,6 +25,7 @@ const CreateRoom = () => {
       description,
       userName: username,
       messages: message,
+      password: password,
     };
 
     const response = await fetch("/chat-api/", {
@@ -38,7 +42,10 @@ const CreateRoom = () => {
       setError(json.error);
       setEmptyFields(json.emptyFields);
     }
-    if (response.ok) {
+
+    if (clicked && password === "") {
+      setPasswordError(true);
+    } else if (response.ok) {
       navigate("/home");
     }
   };
@@ -51,7 +58,10 @@ const CreateRoom = () => {
       <input
         type="text"
         value={name}
-        onChange={(event) => setName(event.target.value)}
+        onChange={(event) => {
+          setName(event.target.value);
+          setEmptyFields([]);
+        }}
         className={emptyFields.includes("name") ? "error" : ""}
       />
 
@@ -59,7 +69,11 @@ const CreateRoom = () => {
       <input
         type="text"
         value={description}
-        onChange={(event) => setDescription(event.target.value)}
+        onChange={(event) => {
+          setDescription(event.target.value);
+          setError(null);
+          setEmptyFields([]);
+        }}
         className={emptyFields.includes("description") ? "error" : ""}
       />
 
@@ -67,15 +81,52 @@ const CreateRoom = () => {
       <input
         type="text"
         value={messages}
-        onChange={(event) => setMessages(event.target.value)}
+        onChange={(event) => {
+          setMessages(event.target.value);
+          setError(null);
+          setEmptyFields([]);
+        }}
         className={emptyFields.includes("messages") ? "error" : ""}
       />
+      {clicked === false ? (
+        <button className="private" onClick={() => setClicked(true)}>
+          Make Private
+        </button>
+      ) : (
+        <>
+          <label>Enter Password:</label>
+          <input
+            type="text"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setPasswordError(false);
+            }}
+            className={passwordError ? "error" : ""}
+          />
+          <button
+            className="private-cancel"
+            onClick={() => {
+              setClicked(false);
+              setPassword("");
+              setPasswordError(false);
+            }}
+          >
+            Cancel
+          </button>
+        </>
+      )}
+      <div className="create-container">
+        <button className="create" onClick={handleCreate}>
+          <strong>Create Room</strong>
+        </button>
+      </div>
 
-      <button className="create" onClick={handleCreate}>
-        Create Room
-      </button>
-
-      {error && <div className="error">{error}</div>}
+      {(error || passwordError) && (
+        <div className="error">
+          {error ? error : "Please fill in all the fields"}
+        </div>
+      )}
     </form>
   );
 };

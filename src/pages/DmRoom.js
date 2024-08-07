@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 const DmRoom = () => {
   const [messages, setMessages] = useState(null);
@@ -11,7 +12,18 @@ const DmRoom = () => {
   const messagesEndRef = useRef(null);
   const [oldLength, setOldLength] = useState(0);
   const [newLength, setNewLength] = useState(0);
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const online = sessionStorage.getItem("online");
+
+  const getOnlineUsers = async () => {
+    const response = await fetch("/online-users");
+    const json = await response.json();
+
+    if (response.ok) {
+      setOnlineUsers(json);
+      console.log(json);
+    }
+  };
 
   const getRoomUsers = async () => {
     const response = await fetch("/dm-api/room/" + dmRoomId);
@@ -58,6 +70,10 @@ const DmRoom = () => {
     }
   };
 
+  const userClick = (username) => {
+    sessionStorage.setItem("clickedUser", username);
+  };
+
   useEffect(() => {
     getMessages();
   }, [messages]);
@@ -65,6 +81,10 @@ const DmRoom = () => {
   useEffect(() => {
     getRoomUsers();
   }, []);
+
+  useEffect(() => {
+    getOnlineUsers();
+  }, [onlineUsers]);
 
   useEffect(() => {
     // Scroll to bottom when messages change
@@ -124,7 +144,39 @@ const DmRoom = () => {
             room.userName &&
             room.userName.map((username, index) => (
               <div key={index} className="user">
-                <h2>{username}</h2>
+                {onlineUsers.includes(username) ? (
+                  <>
+                    <div className="users-flex">
+                      <Link
+                        key={index}
+                        to="/profile"
+                        style={{ textDecoration: "none" }}
+                        onClick={() => userClick(username)}
+                      >
+                        <h2>{username}</h2>
+                      </Link>
+                      <p className="online">
+                        <strong>online</strong>
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="users-flex">
+                      <Link
+                        key={index}
+                        to="/profile"
+                        style={{ textDecoration: "none" }}
+                        onClick={() => userClick(username)}
+                      >
+                        <h2>{username}</h2>
+                      </Link>
+                      <p className="offline">
+                        <strong>offline</strong>
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
         </div>

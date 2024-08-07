@@ -60,10 +60,11 @@ const CreateDmRoom = () => {
         onChange={(event) => setMessages(event.target.value)}
         className={emptyFields.includes("messages") ? "error" : ""}
       />
-
-      <button className="create" onClick={handleCreate}>
-        Create DM
-      </button>
+      <div className="create-container">
+        <button className="create-dm" onClick={handleCreate}>
+          <strong>Create DM</strong>
+        </button>
+      </div>
 
       {error && <div className="error">{error}</div>}
     </form>

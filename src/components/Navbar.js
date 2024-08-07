@@ -1,14 +1,32 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const Navbar = () => {
+const Navbar = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const username = sessionStorage.getItem("user");
 
+  const removeOnlineUser = async () => {
+    const user = { username };
+
+    const response = await fetch("/online-users", {
+      method: "PATCH",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+  };
+
   const handleLogout = () => {
+    removeOnlineUser();
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("chatId");
     sessionStorage.removeItem("dmId");
+    sessionStorage.removeItem("clickedUser");
+    setIsAuthenticated(false);
     navigate("/");
   };
 
@@ -27,12 +45,12 @@ const Navbar = () => {
               <div class="dropdown">
                 <h3>Create Room</h3>
                 <div class="dropdown-content">
-                  <Link to="/create-room">
+                  <Link to="/create-room" className="link">
                     <p>
                       <strong>Create Chat Room</strong>
                     </p>
                   </Link>
-                  <Link to="/create-dm-room">
+                  <Link to="/create-dm-room" className="link">
                     <p>
                       <strong>Create DM</strong>
                     </p>
@@ -51,8 +69,35 @@ const Navbar = () => {
         <nav className="nav2">
           {sessionStorage.length != 0 && (
             <div>
+              <Link to="/friends">
+                <span
+                  class="material-symbols-outlined"
+                  style={{ fontSize: "30px", marginTop: "5px" }}
+                >
+                  group
+                </span>
+              </Link>
+            </div>
+          )}
+          {sessionStorage.length != 0 && (
+            <div>
+              <Link to="/notifications">
+                <span
+                  class="material-symbols-outlined"
+                  style={{ fontSize: "30px", marginTop: "5px" }}
+                >
+                  notifications
+                </span>
+              </Link>
+            </div>
+          )}
+
+          {sessionStorage.length != 0 && (
+            <div>
               <p>
-                <strong>Signed in as: {username}</strong>
+                <strong>
+                  Signed in as: <Link to="/my-profile">{username}</Link>
+                </strong>
               </p>
             </div>
           )}

@@ -9,6 +9,9 @@ const Home = () => {
   const [dmRooms, setDmRooms] = useState(null);
   const [error, setError] = useState(null);
   const username = sessionStorage.getItem("user");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [dmLoading, setDmLoading] = useState(true);
 
   const fetchDmRooms = async () => {
     const response = await fetch("/dm-api/" + username);
@@ -17,8 +20,9 @@ const Home = () => {
     if (!response.ok) {
       setError(json.error);
     }
-    if (response.ok && json.length !== 0) {
+    if (response.ok) {
       setDmRooms(json);
+      setDmLoading(false);
     }
   };
 
@@ -28,9 +32,11 @@ const Home = () => {
 
     if (!response.ok) {
       setError(json.error);
+      console.log(json);
     }
-    if (response.ok && json.length !== 0) {
+    if (response.ok) {
       setRooms(json);
+      setLoading(false);
     }
   };
 
@@ -59,7 +65,9 @@ const Home = () => {
         <div className="chat-room-container">
           <h3>Your Chat Rooms:</h3>
           <div className="rooms">
-            {rooms ? (
+            {loading ? (
+              <h2>Loading...</h2>
+            ) : rooms.length > 0 ? (
               rooms.map((room) => (
                 <Link
                   key={room._id}
@@ -75,7 +83,19 @@ const Home = () => {
                         {room.messages[room.messages.length - 1].text}
                       </strong>
                     </p>
-                    <span className="material-symbols-outlined">info</span>
+                    <div className="info">
+                      <span className="material-symbols-outlined">info</span>
+                      <div className="info-content">
+                        <p>
+                          <strong>Description:</strong>
+                        </p>
+                        <p>{room.description}</p>
+                        <p>
+                          <strong>Number of members: </strong>
+                          {room.userName && room.userName.length}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </Link>
               ))
@@ -97,7 +117,9 @@ const Home = () => {
         <div className="dm-room-container">
           <h3>Your DMs:</h3>
           <div className="dm-rooms">
-            {dmRooms ? (
+            {dmLoading ? (
+              <h2>Loading...</h2>
+            ) : dmRooms.length > 0 ? (
               dmRooms.map((room) => (
                 <Link
                   key={room._id}
@@ -125,8 +147,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {error && <div className="error">{error}</div>}
     </div>
   );
 };
