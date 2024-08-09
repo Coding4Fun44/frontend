@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const CreateDmRoom = () => {
   const [name, setName] = useState("");
   const [messages, setMessages] = useState("");
-  const username = sessionStorage.getItem("user");
+  const username = localStorage.getItem("user");
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const navigate = useNavigate();
@@ -42,32 +42,36 @@ const CreateDmRoom = () => {
   };
 
   return (
-    <form className="create-room">
-      <h3>Send a new DM</h3>
+    <div className="main">
+      <div className="container">
+        <form className="create-room">
+          <h3>Send a new DM</h3>
 
-      <label>Send To:</label>
-      <input
-        type="text"
-        value={name}
-        onChange={(event) => setName(event.target.value)}
-        className={emptyFields.includes("name") ? "error" : ""}
-      />
+          <label>Send To:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            className={emptyFields.includes("name") ? "error" : ""}
+          />
 
-      <label>First Message:</label>
-      <input
-        type="text"
-        value={messages}
-        onChange={(event) => setMessages(event.target.value)}
-        className={emptyFields.includes("messages") ? "error" : ""}
-      />
-      <div className="create-container">
-        <button className="create-dm" onClick={handleCreate}>
-          <strong>Create DM</strong>
-        </button>
+          <label>First Message:</label>
+          <input
+            type="text"
+            value={messages}
+            onChange={(event) => setMessages(event.target.value)}
+            className={emptyFields.includes("messages") ? "error" : ""}
+          />
+          <div className="create-container">
+            <button className="create-dm" onClick={handleCreate}>
+              <strong>Create DM</strong>
+            </button>
+          </div>
+
+          {error && <div className="error">{error}</div>}
+        </form>
       </div>
-
-      {error && <div className="error">{error}</div>}
-    </form>
+    </div>
   );
 };
 

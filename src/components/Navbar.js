@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 const Navbar = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
-  const username = sessionStorage.getItem("user");
+  const username = localStorage.getItem("user");
 
   const removeOnlineUser = async () => {
     const user = { username };
@@ -22,10 +22,10 @@ const Navbar = ({ setIsAuthenticated }) => {
 
   const handleLogout = () => {
     removeOnlineUser();
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("chatId");
-    sessionStorage.removeItem("dmId");
-    sessionStorage.removeItem("clickedUser");
+    localStorage.removeItem("user");
+    localStorage.removeItem("chatId");
+    localStorage.removeItem("dmId");
+    localStorage.removeItem("clickedUser");
     setIsAuthenticated(false);
     navigate("/");
   };
@@ -36,12 +36,12 @@ const Navbar = ({ setIsAuthenticated }) => {
         <div className="app-home-container">
           <h1>ChatNexus</h1>
           <nav className="nav1">
-            {sessionStorage.length != 0 && (
+            {localStorage.length != 0 && (
               <Link to="/home">
                 <h3 className="home-link">Home</h3>
               </Link>
             )}
-            {sessionStorage.length != 0 && (
+            {localStorage.length != 0 && (
               <div class="dropdown">
                 <h3>Create Room</h3>
                 <div class="dropdown-content">
@@ -58,7 +58,7 @@ const Navbar = ({ setIsAuthenticated }) => {
                 </div>
               </div>
             )}
-            {sessionStorage.length != 0 && (
+            {localStorage.length != 0 && (
               <Link to="/available-rooms">
                 <h3 className="available-link">Join Room</h3>
               </Link>
@@ -67,7 +67,7 @@ const Navbar = ({ setIsAuthenticated }) => {
         </div>
 
         <nav className="nav2">
-          {sessionStorage.length != 0 && (
+          {localStorage.length != 0 && (
             <div>
               <Link to="/friends">
                 <span
@@ -79,7 +79,7 @@ const Navbar = ({ setIsAuthenticated }) => {
               </Link>
             </div>
           )}
-          {sessionStorage.length != 0 && (
+          {localStorage.length != 0 && (
             <div>
               <Link to="/notifications">
                 <span
@@ -92,7 +92,7 @@ const Navbar = ({ setIsAuthenticated }) => {
             </div>
           )}
 
-          {sessionStorage.length != 0 && (
+          {localStorage.length != 0 && (
             <div>
               <p>
                 <strong>
@@ -101,7 +101,7 @@ const Navbar = ({ setIsAuthenticated }) => {
               </p>
             </div>
           )}
-          {sessionStorage.length != 0 && (
+          {localStorage.length != 0 && (
             <div>
               <button className="log-out" onClick={handleLogout}>
                 <strong>Log out</strong>

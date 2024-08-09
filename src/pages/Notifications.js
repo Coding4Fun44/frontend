@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Notifications = () => {
   const [error, setError] = useState(null);
-  const username = sessionStorage.getItem("user");
+  const username = localStorage.getItem("user");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -62,47 +63,63 @@ const Notifications = () => {
     }
   };
 
+  const userClick = (username) => {
+    localStorage.setItem("clickedUser", username);
+  };
+
   useEffect(() => {
     getUser();
   }, [user]);
 
   return (
-    <div className="requests">
-      <h1>Notifications</h1>
-      {loading ? (
-        <h2>Loading...</h2>
-      ) : user && user.friendRequest.length > 0 ? (
-        <div>
-          {user &&
-            user.friendRequest &&
-            user.friendRequest.map((name, index) => (
-              <div key={index} className="requests2">
-                <div className="request-containter">
-                  <h2>{name} sent you a friend request.</h2>
+    <div className="main">
+      <div className="container">
+        <h1>Notifications</h1>
+        {loading ? (
+          <h2>Loading...</h2>
+        ) : user && user.friendRequest.length > 0 ? (
+          <div>
+            {user &&
+              user.friendRequest &&
+              user.friendRequest.map((name, index) => (
+                <div key={index} className="requests2">
+                  <div className="request-containter">
+                    <h2>
+                      <Link
+                        key={index}
+                        to="/profile"
+                        style={{ textDecoration: "none", color: "black" }}
+                        onClick={() => userClick(name)}
+                      >
+                        {name}{" "}
+                      </Link>
+                      sent you a friend request.
+                    </h2>
+                  </div>
+                  <div className="accept-decline">
+                    <button
+                      className="accept"
+                      onClick={() => {
+                        acceptRequest(name);
+                        removeRequest(name);
+                      }}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      className="decline"
+                      onClick={() => removeRequest(name)}
+                    >
+                      Decline
+                    </button>
+                  </div>
                 </div>
-                <div className="accept-decline">
-                  <button
-                    className="accept"
-                    onClick={() => {
-                      acceptRequest(name);
-                      removeRequest(name);
-                    }}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className="decline"
-                    onClick={() => removeRequest(name)}
-                  >
-                    Decline
-                  </button>
-                </div>
-              </div>
-            ))}
-        </div>
-      ) : (
-        <h2>You have no notifications!</h2>
-      )}
+              ))}
+          </div>
+        ) : (
+          <h2>You have no notifications!</h2>
+        )}
+      </div>
     </div>
   );
 };

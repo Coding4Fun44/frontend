@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const username = sessionStorage.getItem("user");
-  const clickedUser = sessionStorage.getItem("clickedUser");
+  const username = localStorage.getItem("user");
+  const clickedUser = localStorage.getItem("clickedUser");
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [rooms, setRooms] = useState([]);
@@ -74,58 +74,62 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="profile">
-      {loading ? (
-        <h2>Loading...</h2>
-      ) : (
-        <>
-          <h3>{user && user.userName}</h3>
-          {user && (!user.bio || user.bio.trim() === "") ? (
-            <p>
-              <strong>The user does not have a bio.</strong>
-            </p>
+    <div className="main">
+      <div className="container">
+        <div className="profile">
+          {loading ? (
+            <h2>Loading...</h2>
           ) : (
-            <p>{user && user.bio}</p>
+            <>
+              <h3>{user && user.userName}</h3>
+              {user && (!user.bio || user.bio.trim() === "") ? (
+                <p>
+                  <strong>The user does not have a bio.</strong>
+                </p>
+              ) : (
+                <p>{user && user.bio}</p>
+              )}
+              {username !== clickedUser ? (
+                <h3>Mutual Chat Rooms:</h3>
+              ) : (
+                <h3>My Chat Rooms:</h3>
+              )}
+              {rooms && rooms.length === 0 ? (
+                <p>You don't any mutual chat rooms with this user.</p>
+              ) : (
+                rooms && rooms.map((room) => <p>{room.name}</p>)
+              )}
+              {username !== clickedUser ? (
+                <h3>Mutual Friends:</h3>
+              ) : (
+                <h3>My Friends:</h3>
+              )}
+              {users && users.length === 0 ? (
+                <p>You don't any mutual friends with this user.</p>
+              ) : (
+                users && users.map((user) => <p>{user.userName}</p>)
+              )}
+              {username !== clickedUser &&
+              user &&
+              user.friendList &&
+              !user.friendList.includes(username) ? (
+                !user.friendRequest.includes(username) ? (
+                  <button
+                    className="send-request"
+                    onClick={() => sendFriendRequest()}
+                  >
+                    Send Friend Request
+                  </button>
+                ) : (
+                  <h4>Friend Request Pending</h4>
+                )
+              ) : (
+                <h2></h2>
+              )}
+            </>
           )}
-          {username !== clickedUser ? (
-            <h3>Mutual Chat Rooms:</h3>
-          ) : (
-            <h3>My Chat Rooms:</h3>
-          )}
-          {rooms && rooms.length === 0 ? (
-            <p>You don't any mutual chat rooms with this user.</p>
-          ) : (
-            rooms && rooms.map((room) => <p>{room.name}</p>)
-          )}
-          {username !== clickedUser ? (
-            <h3>Mutual Friends:</h3>
-          ) : (
-            <h3>My Friends:</h3>
-          )}
-          {users && users.length === 0 ? (
-            <p>You don't any mutual friends with this user.</p>
-          ) : (
-            users && users.map((user) => <p>{user.userName}</p>)
-          )}
-          {username !== clickedUser &&
-          user &&
-          user.friendList &&
-          !user.friendList.includes(username) ? (
-            !user.friendRequest.includes(username) ? (
-              <button
-                className="send-request"
-                onClick={() => sendFriendRequest()}
-              >
-                Send Friend Request
-              </button>
-            ) : (
-              <h4>Friend Request Pending</h4>
-            )
-          ) : (
-            <h2></h2>
-          )}
-        </>
-      )}
+        </div>
+      </div>
     </div>
   );
 };

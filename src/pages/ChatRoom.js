@@ -8,13 +8,13 @@ const ChatRoom = () => {
   const [error, setError] = useState(null);
   const [enteredMessage, setEnteredMessage] = useState("");
   const [room, setRoom] = useState(null);
-  const username = sessionStorage.getItem("user");
-  const chatRoomId = sessionStorage.getItem("chatId");
+  const username = localStorage.getItem("user");
+  const chatRoomId = localStorage.getItem("chatId");
   const messagesEndRef = useRef(null);
   const [oldLength, setOldLength] = useState(0);
   const [newLength, setNewLength] = useState(0);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const online = sessionStorage.getItem("online");
+  const online = localStorage.getItem("online");
   const navigate = useNavigate();
 
   const leaveRoom = async () => {
@@ -85,7 +85,7 @@ const ChatRoom = () => {
   };
 
   const userClick = (username) => {
-    sessionStorage.setItem("clickedUser", username);
+    localStorage.setItem("clickedUser", username);
   };
 
   useEffect(() => {
@@ -109,96 +109,103 @@ const ChatRoom = () => {
   }, [messages]);
 
   return (
-    <div className="chat-room">
-      <div className="chat-left">
-        <div className="messages-header">
-          {room && room.name && <h3>{room.name}</h3>}
-        </div>
-        <div className="messages">
-          {messages &&
-            messages.map((message) => (
-              <div key={message._id} className="message">
-                <h4>{message.sender}</h4>
-                <div className="text-time-container">
-                  <h3>{message.text}</h3>
-                  <p>{`${format(
-                    new Date(message.createdAt),
-                    "MMMM dd, yyyy"
-                  )} at ${format(new Date(message.createdAt), "hh:mm a")}`}</p>
-                </div>
-              </div>
-            ))}
-          <div ref={messagesEndRef} /> {/* Empty div for scrolling */}
-        </div>
-        <div className="enter-message">
-          <input
-            value={enteredMessage}
-            onChange={(event) => setEnteredMessage(event.target.value)}
-            placeholder="Enter Message"
-            type="text"
-          />
+    <div className="main">
+      <div className="container">
+        <div className="chat-room">
+          <div className="chat-left">
+            <div className="messages-header">
+              {room && room.name && <h3>{room.name}</h3>}
+            </div>
+            <div className="messages">
+              {messages &&
+                messages.map((message) => (
+                  <div key={message._id} className="message">
+                    <h4>{message.sender}</h4>
+                    <div className="text-time-container">
+                      <h3>{message.text}</h3>
+                      <p>{`${format(
+                        new Date(message.createdAt),
+                        "MMMM dd, yyyy"
+                      )} at ${format(
+                        new Date(message.createdAt),
+                        "hh:mm a"
+                      )}`}</p>
+                    </div>
+                  </div>
+                ))}
+              <div ref={messagesEndRef} /> {/* Empty div for scrolling */}
+            </div>
+            <div className="enter-message">
+              <input
+                value={enteredMessage}
+                onChange={(event) => setEnteredMessage(event.target.value)}
+                placeholder="Enter Message"
+                type="text"
+              />
 
-          <button
-            className={enteredMessage.length === 0 ? "disabled-button" : ""}
-            disabled={enteredMessage.length === 0}
-            onClick={() => sendMessage()}
-          >
-            Send
-          </button>
-        </div>
-      </div>
+              <button
+                className={enteredMessage.length === 0 ? "disabled-button" : ""}
+                disabled={enteredMessage.length === 0}
+                onClick={() => sendMessage()}
+              >
+                Send
+              </button>
+            </div>
+          </div>
 
-      <div className="chat-right">
-        <div className="users-header">
-          <h3>Members</h3>
-        </div>
-        <div className="users">
-          {room &&
-            room.userName &&
-            room.userName.map((username, index) => (
-              <div key={index} className="user">
-                {onlineUsers.includes(username) ? (
-                  <>
-                    <div className="users-flex">
-                      <Link
-                        key={index}
-                        to="/profile"
-                        style={{ textDecoration: "none" }}
-                        onClick={() => userClick(username)}
-                      >
-                        <div className="user">
-                          <h2>{username}</h2>
+          <div className="chat-right">
+            <div className="users-header">
+              <h3>Members</h3>
+            </div>
+            <div className="users">
+              {room &&
+                room.userName &&
+                room.userName.map((username, index) => (
+                  <div key={index} className="user">
+                    {onlineUsers.includes(username) ? (
+                      <>
+                        <div className="users-flex">
+                          <Link
+                            key={index}
+                            to="/profile"
+                            style={{ textDecoration: "none" }}
+                            onClick={() => userClick(username)}
+                          >
+                            <div className="user">
+                              <h2>{username}</h2>
+                            </div>
+                          </Link>
+                          <p className="online">
+                            <strong>online</strong>
+                          </p>
                         </div>
-                      </Link>
-                      <p className="online">
-                        <strong>online</strong>
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="users-flex">
-                      <Link
-                        key={index}
-                        to="/profile"
-                        style={{ textDecoration: "none" }}
-                        onClick={() => userClick(username)}
-                      >
-                        <h2>{username}</h2>
-                      </Link>
-                      <p className="offline">
-                        <strong>offline</strong>
-                      </p>
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
-        </div>
-        <div className="leave-room">
-          <button className="leave-room-button" onClick={() => leaveRoom()}>
-            Leave Room
-          </button>
+                      </>
+                    ) : (
+                      <>
+                        <div className="users-flex">
+                          <Link
+                            key={index}
+                            to="/profile"
+                            style={{ textDecoration: "none", color: "black" }}
+                            onClick={() => userClick(username)}
+                          >
+                            <h2 className="username">{username}</h2>
+                          </Link>
+                          <p className="offline">
+                            <strong>offline</strong>
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+            </div>
+            <div className="leave-room">
+              <button className="leave-room-button" onClick={() => leaveRoom()}>
+                Leave Room
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

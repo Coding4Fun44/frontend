@@ -48,7 +48,7 @@ const Signup = ({ setIsAuthenticated }) => {
     }
     if (response.ok) {
       // save the user to local storage
-      sessionStorage.setItem("user", json.userName);
+      localStorage.setItem("user", json.userName);
       addOnlineUser(json.userName);
       setIsAuthenticated(true);
       navigate("/home");
@@ -58,58 +58,64 @@ const Signup = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <form className="signup">
-      <h3>Sign Up</h3>
+    <div className="main">
+      <div className="container">
+        <form className="signup">
+          <h3>Sign Up</h3>
 
-      <label>Username:</label>
-      <input
-        type="text"
-        value={userName}
-        onChange={(event) => {
-          setUsername(event.target.value);
-          setEmptyFields([]);
-          setError(null);
-        }}
-        className={emptyFields.includes("userName") ? "error" : ""}
-      />
+          <label>Username:</label>
+          <input
+            type="text"
+            value={userName}
+            onChange={(event) => {
+              setUsername(event.target.value);
+              setEmptyFields([]);
+              setError(null);
+            }}
+            className={emptyFields.includes("userName") ? "error" : ""}
+          />
 
-      <label>Password:</label>
-      <input
-        type="text"
-        value={password}
-        onChange={(event) => {
-          setPassword(event.target.value);
-          setEmptyFields([]);
-          setWeakPassword([]);
-          setError(null);
-        }}
-        className={
-          emptyFields.includes("password") || weakPassword.length > 0
-            ? "error"
-            : ""
-        }
-      />
-      <div className="signup-container2">
-        <button className="signup-button2" onClick={handleSignup}>
-          Sign up
-        </button>
-      </div>
-
-      {weakPassword.length > 0 ? (
-        <>
-          <div className="error">
-            <p>
-              <strong>Your password does not meet these requirements:</strong>
-            </p>
-            {weakPassword.map((item) => (
-              <p>• {item}</p>
-            ))}
+          <label>Password:</label>
+          <input
+            type="text"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setEmptyFields([]);
+              setWeakPassword([]);
+              setError(null);
+            }}
+            className={
+              emptyFields.includes("password") || weakPassword.length > 0
+                ? "error"
+                : ""
+            }
+          />
+          <div className="signup-container2">
+            <button className="signup-button2" onClick={handleSignup}>
+              Sign up
+            </button>
           </div>
-        </>
-      ) : (
-        error && <div className="error">{error}</div>
-      )}
-    </form>
+
+          {weakPassword.length > 0 ? (
+            <>
+              <div className="error">
+                <p>
+                  <strong>
+                    Your password does not meet these requirements:
+                  </strong>
+                </p>
+                {weakPassword.map((item) => (
+                  <p>• {item}</p>
+                ))}
+              </div>
+            </>
+          ) : (
+            error && <div className="error">{error}</div>
+          )}
+        </form>
+      </div>
+    </div>
   );
 };
 

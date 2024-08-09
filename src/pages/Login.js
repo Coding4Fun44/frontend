@@ -43,7 +43,7 @@ const Login = ({ setIsAuthenticated }) => {
     if (response.ok) {
       // save the user to local storage
       console.log(json.userName);
-      sessionStorage.setItem("user", json.userName);
+      localStorage.setItem("user", json.userName);
       addOnlineUser(json.userName);
       setIsAuthenticated(true);
       navigate("/home");
@@ -53,40 +53,44 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <form className="login">
-      <h3>Log in to Your Account</h3>
+    <div className="main">
+      <div className="container">
+        <form className="login">
+          <h3>Log in to Your Account</h3>
 
-      <label>Username:</label>
-      <input
-        type="text"
-        value={userName}
-        onChange={(event) => {
-          setUsername(event.target.value);
-          setEmptyFields([]);
-          setError(null);
-        }}
-        className={emptyFields.includes("userName") ? "error" : ""}
-      />
+          <label>Username:</label>
+          <input
+            type="text"
+            value={userName}
+            onChange={(event) => {
+              setUsername(event.target.value);
+              setEmptyFields([]);
+              setError(null);
+            }}
+            className={emptyFields.includes("userName") ? "error" : ""}
+          />
 
-      <label>Password:</label>
-      <input
-        type="text"
-        value={password}
-        onChange={(event) => {
-          setPassword(event.target.value);
-          setEmptyFields([]);
-          setError(null);
-        }}
-        className={emptyFields.includes("password") ? "error" : ""}
-      />
-      <div className="login-container">
-        <button className="login-button2" onClick={handleLogin}>
-          Log in
-        </button>
+          <label>Password:</label>
+          <input
+            type="text"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setEmptyFields([]);
+              setError(null);
+            }}
+            className={emptyFields.includes("password") ? "error" : ""}
+          />
+          <div className="login-container">
+            <button className="login-button2" onClick={handleLogin}>
+              Log in
+            </button>
+          </div>
+
+          {error && <div className="error">{error}</div>}
+        </form>
       </div>
-
-      {error && <div className="error">{error}</div>}
-    </form>
+    </div>
   );
 };
 

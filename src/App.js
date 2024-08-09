@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    sessionStorage.getItem("user") != null
+    localStorage.getItem("user") != null
   );
   console.log(isAuthenticated);
 

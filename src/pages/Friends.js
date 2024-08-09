@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Friends = () => {
   const [error, setError] = useState(null);
-  const username = sessionStorage.getItem("user");
+  const username = localStorage.getItem("user");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [onlineLoading, setOnlineLoading] = useState(true);
@@ -34,7 +34,7 @@ const Friends = () => {
   };
 
   const userClick = (username) => {
-    sessionStorage.setItem("clickedUser", username);
+    localStorage.setItem("clickedUser", username);
   };
 
   const removeFriend = async (name) => {
@@ -79,63 +79,63 @@ const Friends = () => {
   }, [onlineUsers]);
 
   return (
-    <div className="friends">
-      <h1>My Friends</h1>
-      {loading || onlineLoading ? (
-        <h2>Loading...</h2>
-      ) : user && user.friendList.length > 0 ? (
-        <div>
-          {user &&
-            user.friendList &&
-            user.friendList.map((friend, index) => (
-              <div key={index} className="friends2">
-                {onlineUsers && onlineUsers.includes(friend) ? (
-                  <>
-                    <div className="friends-flex">
-                      <Link
-                        key={index}
-                        to="/profile"
-                        style={{ textDecoration: "none" }}
-                        onClick={() => userClick(friend)}
-                      >
-                        <div className="friend">
+    <div className="main">
+      <div className="container">
+        <h1>My Friends</h1>
+        {loading || onlineLoading ? (
+          <h2>Loading...</h2>
+        ) : user && user.friendList.length > 0 ? (
+          <div>
+            {user &&
+              user.friendList &&
+              user.friendList.map((friend, index) => (
+                <div key={index} className="friends2">
+                  {onlineUsers && onlineUsers.includes(friend) ? (
+                    <>
+                      <div className="friends-flex">
+                        <Link
+                          key={index}
+                          to="/profile"
+                          style={{ textDecoration: "none", color: "black" }}
+                          onClick={() => userClick(friend)}
+                        >
+                          <h2 className="username">{friend}</h2>
+                        </Link>
+                        <h3 className="online">
+                          <strong>online</strong>
+                        </h3>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="friends-flex">
+                        <Link
+                          key={index}
+                          to="/profile"
+                          style={{ textDecoration: "none" }}
+                          onClick={() => userClick(friend)}
+                        >
                           <h2>{friend}</h2>
-                        </div>
-                      </Link>
-                      <h3 className="online">
-                        <strong>online</strong>
-                      </h3>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="friends-flex">
-                      <Link
-                        key={index}
-                        to="/profile"
-                        style={{ textDecoration: "none" }}
-                        onClick={() => userClick(friend)}
-                      >
-                        <h2>{friend}</h2>
-                      </Link>
-                      <h3 className="offline">
-                        <strong>offline</strong>
-                      </h3>
-                    </div>
-                  </>
-                )}
-                <button
-                  className="remove-friend"
-                  onClick={() => removeFriend(friend)}
-                >
-                  Remove Friend
-                </button>
-              </div>
-            ))}
-        </div>
-      ) : (
-        <h2>You have no friends yet!</h2>
-      )}
+                        </Link>
+                        <h3 className="offline">
+                          <strong>offline</strong>
+                        </h3>
+                      </div>
+                    </>
+                  )}
+                  <button
+                    className="remove-friend"
+                    onClick={() => removeFriend(friend)}
+                  >
+                    Remove Friend
+                  </button>
+                </div>
+              ))}
+          </div>
+        ) : (
+          <h2>You have no friends yet!</h2>
+        )}
+      </div>
     </div>
   );
 };
